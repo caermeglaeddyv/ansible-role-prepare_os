@@ -1,4 +1,4 @@
-Prepare OS
+Ansible role: Prepare OS
 =========
 
 Originally this role was used to do common preparations for all infrastructure hosts used in kubernetes project.
