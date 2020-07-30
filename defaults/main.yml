@@ -1,0 +1,20 @@
+---
+# defaults file for prepare_os
+
+
+# Array of extra /etc/hosts entries which need to be added to your host(s).
+# You can use group_vars and host_vars functionality to separate entries for
+# inventory groups and hosts respectively. Each array member is a string which
+# repeats line in /etc/hosts file:
+prepare_os_extra_etc_hosts: []
+# - 1.2.3.4     abc.yxz
+
+# Version of chrony package:
+prepare_os_chrony_version: 3.4
+
+# Timezone to set with timedatectl utility:
+prepare_os_timezone: UTC
+
+# Path to ssh public key which will be deployed to every inventory host
+# (absolute or relative to directory from which playbook is executed):
+prepare_os_ssh_pubkey_file_path: id_rsa.pub

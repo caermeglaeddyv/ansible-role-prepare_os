@@ -1,0 +1,79 @@
+---
+# tasks file for prepare_os
+- name: delete uppercase hostname from hosts file
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "{{ inventory_hostname_short | upper }}"
+    state: absent
+
+- name: set hostnames
+  hostname:
+    name: "{{ inventory_hostname_short }}"
+
+- name: add every machine to hosts file
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{ hostvars[item].ansible_host }}     {{ hostvars[item].inventory_hostname_short }}"
+    state: present
+  with_items: "{{ groups.all }}"
+
+- name: add extra entries to hosts file
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{ item }}"
+    state: present
+  with_items: "{{ prepare_os_extra_etc_hosts }}"
+
+- name: upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+    update_cache: true
+  tags:
+  - never
+
+- name: make ansible user passwordless sudo
+  copy:
+    dest: /etc/sudoers.d/{{ ansible_user }}
+    content: "{{ ansible_user }}  ALL=(ALL)  NOPASSWD: ALL"
+
+- name: install chrony
+  yum:
+    name:
+    - chrony-{{ prepare_os_chrony_version }}
+    state: present
+
+- name: start and enable chronyd
+  systemd:
+    daemon_reload: yes
+    name: chronyd
+    enabled: yes
+    state: started
+
+- name: set timezone and activate NTP/Chronyd synchronization
+  shell: |
+    /bin/timedatectl set-ntp 0 \
+    && /bin/timedatectl set-timezone {{ prepare_os_timezone }} \
+    && /bin/timedatectl set-ntp 1
+  notify:
+  - restart chronyd
+
+- name: deploy ssh key for ansible user
+  authorized_key:
+    user: "{{ ansible_user }}"
+    key: "{{ lookup('file', '{{ prepare_os_ssh_pubkey_file_path }}') }}"
+    state: present
+
+- name: ssh disable password authentication and root login
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  with_items:
+  - regexp: '^PasswordAuthentication'
+    line: 'PasswordAuthentication no'
+  - regexp: '^PermitRootLogin'
+    line: 'PermitRootLogin no'
+  notify:
+  - restart ssh

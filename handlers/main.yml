@@ -1,0 +1,37 @@
+---
+# handlers file for prepare_os
+- name: start ssh
+  systemd:
+    daemon_reload: yes
+    name: sshd
+    state: started
+
+- name: stop ssh
+  systemd:
+    daemon_reload: yes
+    name: sshd
+    state: stopped
+
+- name: restart ssh
+  systemd:
+    daemon_reload: yes
+    name: sshd
+    state: restarted
+
+- name: start chronyd
+  systemd:
+    daemon_reload: yes
+    name: chronyd
+    state: started
+
+- name: stop chronyd
+  systemd:
+    daemon_reload: yes
+    name: chronyd
+    state: stopped
+
+- name: restart chronyd
+  systemd:
+    daemon_reload: yes
+    name: chronyd
+    state: restarted
