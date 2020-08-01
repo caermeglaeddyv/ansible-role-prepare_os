@@ -35,7 +35,7 @@
 - name: make ansible user passwordless sudo
   copy:
     dest: /etc/sudoers.d/{{ ansible_user }}
-    content: "{{ ansible_user }}  ALL=(ALL)  NOPASSWD: /usr/bin/python -c*"
+    content: "{{ ansible_user }}  ALL=(ALL)  NOPASSWD: /usr/bin/python"
 
 - name: install chrony
   yum:
