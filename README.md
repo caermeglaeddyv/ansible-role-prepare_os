@@ -48,8 +48,9 @@ prepare_os_chrony_version: 3.4
 prepare_os_timezone: UTC
 
 # Path to ssh public key which will be deployed to every inventory host
-# (absolute or relative to directory from which playbook is executed):
-prepare_os_ssh_pubkey_file_path: id_rsa.pub
+# (absolute or relative to directory from which playbook is executed),
+# if defined, it will also disable password authentication on ssh server:
+prepare_os_ssh_pubkey_file_path: 
 
 ```
 

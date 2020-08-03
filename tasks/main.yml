@@ -58,22 +58,26 @@
   notify:
   - restart chronyd
 
+- name: ssh disable root login
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^PermitRootLogin'
+    line: 'PermitRootLogin no'
+    state: present
+
 - name: deploy ssh key for ansible user
   authorized_key:
     user: "{{ ansible_user }}"
     key: "{{ lookup('file', '{{ prepare_os_ssh_pubkey_file_path }}') }}"
     state: present
+  when: prepare_os_ssh_pubkey_file_path
 
-- name: ssh disable password authentication and root login
+- name: ssh disable password authentication
   lineinfile:
     dest: /etc/ssh/sshd_config
-    regexp: "{{ item.regexp }}"
-    line: "{{ item.line }}"
-    state: present
-  with_items:
-  - regexp: '^PasswordAuthentication'
+    regexp: '^PasswordAuthentication'
     line: 'PasswordAuthentication no'
-  - regexp: '^PermitRootLogin'
-    line: 'PermitRootLogin no'
+    state: present
+  when: prepare_os_ssh_pubkey_file_path
   notify:
   - restart ssh
