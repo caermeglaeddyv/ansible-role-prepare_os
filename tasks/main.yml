@@ -70,7 +70,7 @@
     user: "{{ ansible_user }}"
     key: "{{ lookup('file', '{{ prepare_os_ssh_pubkey_file_path }}') }}"
     state: present
-  when: prepare_os_ssh_pubkey_file_path
+  when: prepare_os_ssh_pubkey_file_path | bool
 
 - name: ssh disable password authentication
   lineinfile:
