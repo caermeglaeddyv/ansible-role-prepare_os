@@ -78,6 +78,6 @@
     regexp: '^PasswordAuthentication'
     line: 'PasswordAuthentication no'
     state: present
-  when: prepare_os_ssh_pubkey_file_path is defined
+  when: prepare_os_ssh_pubkey_file_path | length
   notify:
   - restart ssh
