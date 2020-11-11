@@ -8,7 +8,7 @@
 
 - name: set hostnames
   hostname:
-    name: "{{ inventory_hostname_short }}"
+    name: "{{ prepare_os_hostname if prepare_os_hostname else inventory_hostname_short }}"
 
 - name: add every machine to hosts file
   lineinfile:
