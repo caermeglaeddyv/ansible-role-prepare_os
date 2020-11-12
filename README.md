@@ -18,7 +18,7 @@ Requirements
 ------------
 
 This is not strict requirements and it may not work with other versions than tested ones.
-Anyway. feel yourself free to test by yourself, suggest addition of new functionality and contribute.
+Anyway. feel free to test by yourself, suggest addition of new functionality and contribute.
 
 Role is tested with:
 - Ansible version >= 2.8.6
