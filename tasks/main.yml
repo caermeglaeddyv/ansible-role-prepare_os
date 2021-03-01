@@ -29,6 +29,7 @@
     name: '*'
     state: latest
     update_cache: true
+  when: prepare_os_yum_upgrade_all
   tags:
   - never
 

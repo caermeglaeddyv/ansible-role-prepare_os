@@ -9,6 +9,9 @@
 prepare_os_extra_etc_hosts: []
 # - 1.2.3.4     abc.yxz
 
+# If to perform upgrade of all packages via yum or not:
+prepare_os_yum_upgrade_all: true
+
 # Version of chrony package:
 prepare_os_chrony_version: 3.4
 
